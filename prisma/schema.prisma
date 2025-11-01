@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(cuid())
+  customerId  String    @unique
+  password    String
+  name        String
+  phoneNumber String    @unique
+  accounts    Account[]
+  createdAt   DateTime  @default(now())
+}
+
+model Account {
+  id            String        @id @default(cuid())
+  accountNumber String        @unique
+  accountType   AccountType
+  ownerId       String
+  owner         User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  balance       Int
+  transactions  Transaction[]
+  createdAt     DateTime      @default(now())
+}
+
+model Transaction {
+  id              String            @id @default(cuid())
+  transactionId   String            @unique
+  transactionType TransactionType
+  status          TransactionStatus
+  amount          Int
+  accountId       String
+  account         Account           @relation(fields: [accountId], references: [accountNumber], onDelete: Cascade)
+  createdAt       DateTime          @default(now())
+}
+
+model TransactionToken {
+  id              String      @id @default(cuid())
+  status          TokenStatus
+  user_identifier String
+  transactionId   String      @unique
+  amount          Int
+  provider        String
+  createdAt       DateTime    @default(now())
+  expiresAt       DateTime
+  invalidated     Boolean     @default(false)
+
+  @@index([transactionId])
+}
+
+enum AccountType {
+  CURRENT
+  SAVINGS
+}
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+}
+
+enum TransactionStatus {
+  COMPLETED
+  FAILED
+}
+
+enum TokenStatus {
+  PENDING
+  COMPLETED
+  EXPIRED
+}
