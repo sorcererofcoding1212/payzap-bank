@@ -1,1 +1,1 @@
-export const BANK_WEBHOOK_URL = "http://localhost:3001/api/v1";
+export const BANK_WEBHOOK_URL = process.env.WEBHOOK_URL;
