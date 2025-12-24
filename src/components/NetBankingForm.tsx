@@ -5,6 +5,7 @@ import { LabelledInput } from "./LabelledInput";
 import { createDebitTransaction } from "@/actions/createTransaction";
 import { authenticateUser } from "@/actions/authenticateUser";
 import { redirect } from "next/navigation";
+import clsx from "clsx";
 
 interface NetBankingFormProps {
   user_identifier: string;
@@ -79,14 +80,19 @@ export const NetBankingForm = ({
         />
         <button
           disabled={inTransaction}
-          className="text-sm lg:text-base bg-blue-500 px-6 py-2.5 mt-2 cursor-pointer text-white font-semibold rounded-md"
+          className={clsx(
+            "text-sm lg:text-base bg-blue-500 px-6 py-2.5 mt-2 cursor-pointer text-white font-semibold rounded-md",
+            inTransaction && "bg-blue-300"
+          )}
         >
-          Continue
+          {inTransaction ? "Please wait" : "Continue"}
         </button>
         {errorMsg && (
           <div className="text-red-500 text-sm lg:text-base">{errorMsg}</div>
         )}
-        <div className="opacity-80 text-xs mt-1 lg:mt-4 lg:text-sm">* Please do not refresh the page</div>
+        <div className="opacity-80 text-xs mt-1 lg:mt-4 lg:text-sm">
+          * Please do not refresh the page
+        </div>
       </form>
     </>
   );
