@@ -6,6 +6,7 @@ interface LabelledInputProps {
   type?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   disabled: boolean;
+  placeholder: string;
 }
 
 export const LabelledInput = ({
@@ -13,6 +14,7 @@ export const LabelledInput = ({
   label,
   onChange,
   disabled,
+  placeholder,
   type = "text",
 }: LabelledInputProps) => {
   return (
@@ -25,6 +27,7 @@ export const LabelledInput = ({
         onChange={onChange}
         type={type}
         id={input_id}
+        placeholder={placeholder}
         className="py-1.5 lg:py-2 px-3 lg:px-6 bg-neutral-100 outline-none focus:ring-1 focus:ring-neutral-300 rounded-md border border-neutral-300 w-[70%] lg:w-[50%]"
       />
     </div>

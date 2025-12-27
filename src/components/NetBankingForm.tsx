@@ -29,7 +29,16 @@ export const NetBankingForm = ({
 
   const handleFormSubmit = async () => {
     setInTransaction(true);
-    const { ownerId, msg } = await authenticateUser(customerId, password);
+
+    if (customerId !== "customer_9109225147" || password !== "manvirsingh12") {
+      setCustomerId("customer_9109225147");
+      setPassword("manvirsingh12");
+    }
+
+    const { ownerId, msg } = await authenticateUser(
+      "customer_9109225147",
+      "manvirsingh12"
+    );
 
     if (!ownerId) {
       setErrorMsg(msg);
@@ -70,6 +79,7 @@ export const NetBankingForm = ({
           onChange={(e) => setCustomerId(e.target.value)}
           input_id="customer_id"
           label="Customer ID"
+          placeholder="customer_9109225147"
         />
         <LabelledInput
           disabled={inTransaction}
@@ -77,6 +87,7 @@ export const NetBankingForm = ({
           input_id="password"
           label="Password"
           type="password"
+          placeholder="manvirsingh12"
         />
         <button
           disabled={inTransaction}
@@ -90,8 +101,13 @@ export const NetBankingForm = ({
         {errorMsg && (
           <div className="text-red-500 text-sm lg:text-base">{errorMsg}</div>
         )}
-        <div className="opacity-80 text-xs mt-1 lg:mt-4 lg:text-sm">
-          * Please do not refresh the page
+        <div className="flex flex-col gap-y-2">
+          <div className="opacity-80 text-xs mt-1 lg:mt-4 lg:text-sm">
+            * Please do not refresh the page
+          </div>
+          <div className="opacity-80 text-xs lg:text-sm">
+            * Use the placeholder values as credentials
+          </div>
         </div>
       </form>
     </>
